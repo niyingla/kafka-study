@@ -212,6 +212,7 @@ public class ConsumerSample {
                 3、每次poll之前，从redis中获取最新的offset位置
                 4、每次从这个位置开始消费
              */
+            // 1 指定partition 2 起始 offset
             consumer.seek(p0, 700);
 
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10000));
@@ -261,8 +262,7 @@ public class ConsumerSample {
                 List<ConsumerRecord<String, String>> pRecord = records.records(partition);
                 long num = 0;
                 for (ConsumerRecord<String, String> record : pRecord) {
-                    System.out.printf("patition = %d , offset = %d, key = %s, value = %s%n",
-                            record.partition(), record.offset(), record.key(), record.value());
+                    System.out.printf("patition = %d , offset = %d, key = %s, value = %s%n", record.partition(), record.offset(), record.key(), record.value());
                     /*
                         1、接收到record信息以后，去令牌桶中拿取令牌
                         2、如果获取到令牌，则继续业务处理
@@ -272,12 +272,14 @@ public class ConsumerSample {
                     num++;
                     if (record.partition() == 0) {
                         if (num >= totalNum) {
+                            //暂停从请求的分区中获取
                             consumer.pause(Arrays.asList(p0));
                         }
                     }
 
                     if (record.partition() == 1) {
                         if (num == 40) {
+                            //继续从请求的分区中获取
                             consumer.resume(Arrays.asList(p0));
                         }
                     }
