@@ -1,0 +1,17 @@
+1 、启动kafka
+bin/kafka-server-start.sh config/server.properties
+
+2 、停止kafka
+bin/kafka-server-stop.sh
+
+3 、创建Topic huohuo
+bin/kafka-topic.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic huohuo
+
+4 、查看topic
+bin/kafka-topic.sh --list --zookeeper  localhost:2181
+
+5 、发送消息
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic huohuo
+
+6 、接受消息
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic huohuo --from-beginning
