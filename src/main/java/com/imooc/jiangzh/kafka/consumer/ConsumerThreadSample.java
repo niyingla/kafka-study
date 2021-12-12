@@ -15,10 +15,11 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConsumerThreadSample {
-    private final static String TOPIC_NAME="jiangzh-topic";
+    private final static String TOPIC_NAME = "jiangzh-topic";
 
-    /*
-        这种类型是经典模式，每一个线程单独创建一个KafkaConsumer，用于保证线程安全
+    /**
+     * 适合重要的数据 方便的进行重试处理
+     * 这种类型是经典模式，每一个线程单独创建一个KafkaConsumer，用于保证线程安全
      */
     public static void main(String[] args) throws InterruptedException {
         KafkaConsumerRunner r1 = new KafkaConsumerRunner();
@@ -31,7 +32,7 @@ public class ConsumerThreadSample {
         r1.shutdown();
     }
 
-    public static class KafkaConsumerRunner implements Runnable{
+    public static class KafkaConsumerRunner implements Runnable {
         private final AtomicBoolean closed = new AtomicBoolean(false);
         private final KafkaConsumer consumer;
 
@@ -50,13 +51,13 @@ public class ConsumerThreadSample {
             TopicPartition p0 = new TopicPartition(TOPIC_NAME, 0);
             TopicPartition p1 = new TopicPartition(TOPIC_NAME, 1);
 
-            consumer.assign(Arrays.asList(p0,p1));
+            consumer.assign(Arrays.asList(p0, p1));
         }
 
 
         public void run() {
             try {
-                while(!closed.get()) {
+                while (!closed.get()) {
                     //处理消息
                     ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10000));
 
@@ -64,8 +65,7 @@ public class ConsumerThreadSample {
                         List<ConsumerRecord<String, String>> pRecord = records.records(partition);
                         // 处理每个分区的消息
                         for (ConsumerRecord<String, String> record : pRecord) {
-                            System.out.printf("patition = %d , offset = %d, key = %s, value = %s%n",
-                                    record.partition(),record.offset(), record.key(), record.value());
+                            System.out.printf("patition = %d , offset = %d, key = %s, value = %s%n", record.partition(), record.offset(), record.key(), record.value());
                         }
 
                         // 返回去告诉kafka新的offset
@@ -75,11 +75,11 @@ public class ConsumerThreadSample {
                     }
 
                 }
-            }catch(WakeupException e) {
-                if(!closed.get()) {
+            } catch (WakeupException e) {
+                if (!closed.get()) {
                     throw e;
                 }
-            }finally {
+            } finally {
                 consumer.close();
             }
         }

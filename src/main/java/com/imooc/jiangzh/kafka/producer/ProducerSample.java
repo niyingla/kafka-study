@@ -51,9 +51,7 @@ public class ProducerSample {
 
         // 消息对象 - ProducerRecoder
         for(int i=0;i<10;i++){
-            ProducerRecord<String,String> record =
-                    new ProducerRecord<>(TOPIC_NAME,"key-"+i,"value-"+i);
-
+            ProducerRecord<String,String> record = new ProducerRecord<>(TOPIC_NAME,"key-"+i,"value-"+i);
             producer.send(record, new Callback() {
                 @Override
                 public void onCompletion(RecordMetadata recordMetadata, Exception e) {

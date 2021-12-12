@@ -47,9 +47,7 @@ public class WechatTemplateServiceImpl implements WechatTemplateService{
         JSONArray reportData = reportInfo.getJSONArray("result");
 
         // 如果templateid相同，后续在统计分析时，可以考虑将相同的id的内容放入同一个partition，便于分析使用
-        ProducerRecord<String,Object> record =
-                new ProducerRecord<>(topicName,templateId,reportData);
-
+        ProducerRecord<String, Object> record = new ProducerRecord<>(topicName, templateId, reportData);
         /*
             1、Kafka Producer是线程安全的，建议多线程复用，如果每个线程都创建，出现大量的上下文切换或争抢的情况，影响Kafka效率
             2、Kafka Producer的key是一个很重要的内容：
