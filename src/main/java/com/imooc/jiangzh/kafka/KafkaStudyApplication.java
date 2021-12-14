@@ -14,6 +14,8 @@ public class KafkaStudyApplication {
      * 1 分片(partition)一般都会分布在不同的 节点上（broke）上
      * 2 可以为每个分片单独设置副本数（每份分片都是一份保障）
      * 3 生产者随便访问哪个节点都可发送数据（有同步机制）
+     *
+     * ISR节点列表 acks=1 时 同步等待响应同步完成的节点列表 当leader 挂了会在ISR中选择最快的节点
      * @param args
      */
 
