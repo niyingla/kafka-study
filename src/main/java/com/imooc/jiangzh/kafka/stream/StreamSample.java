@@ -14,21 +14,21 @@ import java.util.Properties;
 
 public class StreamSample {
 
-    private static final String INPUT_TOPIC="jiangzh-stream-in";
-    private static final String OUT_TOPIC="jiangzh-stream-out";
+    private static final String INPUT_TOPIC = "jiangzh-stream-in";
+    private static final String OUT_TOPIC = "jiangzh-stream-out";
 
     public static void main(String[] args) {
         Properties props = new Properties();
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,"192.168.220.128:9092");
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG,"wordcount-app");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.220.128:9092");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "wordcount-app");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         // 如果构建流结构拓扑
         final StreamsBuilder builder = new StreamsBuilder();
         // 构建Wordcount
-//        wordcountStream(builder);
-        // 构建foreachStream
+        wordcountStream(builder);
+//         构建foreachStream
         foreachStream(builder);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), props);
@@ -37,17 +37,17 @@ public class StreamSample {
     }
 
     // 如果定义流计算过程
-    static void foreachStream(final StreamsBuilder builder){
-        KStream<String,String> source = builder.stream(INPUT_TOPIC);
+    static void foreachStream(final StreamsBuilder builder) {
+        KStream<String, String> source = builder.stream(INPUT_TOPIC);
         source
                 .flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split(" ")))
-                .foreach((key,value)-> System.out.println(key + " : " + value));
+                .foreach((key, value) -> System.out.println(key + " : " + value));
     }
 
     // 如果定义流计算过程
-    static void wordcountStream(final StreamsBuilder builder){
+    static void wordcountStream(final StreamsBuilder builder) {
         // 不断从INPUT_TOPIC上获取新数据，并且追加到流上的一个抽象对象
-        KStream<String,String> source = builder.stream(INPUT_TOPIC);
+        KStream<String, String> source = builder.stream(INPUT_TOPIC);
         // Hello World imooc
         // KTable是数据集合的抽象对象
         // 算子
@@ -67,7 +67,7 @@ public class StreamSample {
                         .count();
 
         // 将结果输入到OUT_TOPIC中
-        count.toStream().to(OUT_TOPIC, Produced.with(Serdes.String(),Serdes.Long()));
+        count.toStream().to(OUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
     }
 
 }
