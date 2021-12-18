@@ -1,0 +1,13 @@
+kafka 优势原因
+1 日志顺序读写和快速检索 （写入消息 写到partition 的最后一个segment里）
+2 partition 分区机制 （每个partion有多个等大小的segment 写满就进入下一个 然后有个列表记录 当前segment的消息offset区间和
+然后segment目录包含两个文件log和index文件 磁盘位置可以根据offset查询磁盘位置写取）
+3 批量发送和数据压缩 （有个单独的线程写盘，接收消息达到阈值后，批量写入磁盘，然后其他broker同步）
+4 推送消息 sendfile 0拷贝 （linux操作系统支持 tomcat也支持 内核态数据不用转换到用户态）
+
+注意点
+1 一个partition只能被一个消费者订阅消费，一个消费者可以消费多个partition
+2 删除时监听zookeeper 上/admin/delete_topics/节点的变化 删除命令会写入topic同名文件，操作步骤依次为
+ 2.1 删除分区数据
+ 2.2 删除zookeeper相关目录
+ 2.3 清空controller 中的cache
