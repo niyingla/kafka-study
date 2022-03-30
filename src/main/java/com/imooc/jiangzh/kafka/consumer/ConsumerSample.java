@@ -4,9 +4,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.internals.Topic;
 
 import java.time.Duration;
 import java.util.*;
@@ -42,7 +40,7 @@ public class ConsumerSample {
     private static void helloworld() {
         Properties props = new Properties();
         //地址
-        props.setProperty("bootstrap.servers", "192.168.220.128:9092");
+        props.setProperty("bootstrap.servers", "106.52.197.116:11092");
         //组id
         props.setProperty("group.id", "test");
         //如果为真，consumer 所 fetch 的消息的 offset 将会自动的同步到 zookeeper。
@@ -71,7 +69,7 @@ public class ConsumerSample {
      */
     private static void commitedOffset() {
         Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "192.168.220.128:9092");
+        props.setProperty("bootstrap.servers", "106.52.197.116:11092");
         props.setProperty("group.id", "test");
         props.setProperty("enable.auto.commit", "false");
         props.setProperty("auto.commit.interval.ms", "1000");
@@ -102,7 +100,7 @@ public class ConsumerSample {
      */
     private static void commitedOffsetWithPartition() {
         Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "192.168.220.128:9092");
+        props.setProperty("bootstrap.servers", "106.52.197.116:11092");
         props.setProperty("group.id", "test");
         props.setProperty("enable.auto.commit", "false");
         props.setProperty("auto.commit.interval.ms", "1000");
@@ -140,7 +138,7 @@ public class ConsumerSample {
      */
     private static void commitedOffsetWithPartition2() {
         Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "192.168.220.128:9092");
+        props.setProperty("bootstrap.servers", "106.52.197.116:11092");
         props.setProperty("group.id", "test");
         props.setProperty("enable.auto.commit", "false");
         props.setProperty("auto.commit.interval.ms", "1000");
@@ -185,7 +183,7 @@ public class ConsumerSample {
      */
     private static void controlOffset() {
         Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "192.168.220.128:9092");
+        props.setProperty("bootstrap.servers", "106.52.197.116:11092");
         props.setProperty("group.id", "test");
         props.setProperty("enable.auto.commit", "false");
         props.setProperty("auto.commit.interval.ms", "1000");
@@ -239,7 +237,7 @@ public class ConsumerSample {
      */
     private static void controlPause() {
         Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "192.168.220.128:9092");
+        props.setProperty("bootstrap.servers", "106.52.197.116:11092");
         props.setProperty("group.id", "test");
         props.setProperty("enable.auto.commit", "false");
         props.setProperty("auto.commit.interval.ms", "1000");

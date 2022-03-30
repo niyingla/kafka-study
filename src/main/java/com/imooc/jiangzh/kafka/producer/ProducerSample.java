@@ -26,7 +26,7 @@ public class ProducerSample {
      */
     public static void producerSendWithCallbackAndPartition(){
         Properties properties = new Properties();
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"192.168.220.128:9092");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"106.52.197.116:11092");
         //producer 需要 server 接收到数据之后发出的 确认接收的信号，此项配置就是指 procuder 需要多少个这样的确认信号。此配置实际上代表。
         // acks=0： 设置为 0 表示 producer 不需 要等待任何确认收到的信息
         // acks=1： 这意味着至少要等待 leader 已经成功将数据写入本地 log，但是并没有等待 所有follower是否成功写入
@@ -38,6 +38,8 @@ public class ProducerSample {
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG,"16384");
         //多久发送一个批次到服务端
         properties.put(ProducerConfig.LINGER_MS_CONFIG,"1");
+        //重试次数
+        properties.put(ProducerConfig.RETRIES_CONFIG,"3");
         //缓存最大
         properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG,"33554432");
         //指定序列化类
@@ -69,7 +71,7 @@ public class ProducerSample {
      */
     public static void producerSendWithCallback(){
         Properties properties = new Properties();
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"192.168.220.128:9092");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"106.52.197.116:11092");
         properties.put(ProducerConfig.ACKS_CONFIG,"all");
         properties.put(ProducerConfig.RETRIES_CONFIG,"0");
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG,"16384");
@@ -105,15 +107,15 @@ public class ProducerSample {
     public static void producerSend(){
         Properties properties = new Properties();
         //服务地址
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"192.168.220.128:9092");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"106.52.197.116:11092");
         //
         properties.put(ProducerConfig.ACKS_CONFIG,"all");
-        //重试
-        properties.put(ProducerConfig.RETRIES_CONFIG,"0");
         //批量大小
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG,"16384");
         //
         properties.put(ProducerConfig.LINGER_MS_CONFIG,"1");
+        //发送失败 重试次数
+        properties.put(ProducerConfig.RETRIES_CONFIG,"3");
         //
         properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG,"33554432");
         //key 序列化方式
@@ -125,7 +127,7 @@ public class ProducerSample {
         Producer<String,String> producer = new KafkaProducer<>(properties);
 
         // 消息对象 - ProducerRecoder
-        for(int i=0;i<10;i++){
+        for(int i=0;i<1;i++){
             //创建需要发送的消息记录
             ProducerRecord<String,String> record = new ProducerRecord<>(TOPIC_NAME,"key-"+i,"value-"+i);
             producer.send(record);
@@ -140,7 +142,7 @@ public class ProducerSample {
      */
     public static void producerSyncSend() throws ExecutionException, InterruptedException {
         Properties properties = new Properties();
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"192.168.220.128:9092");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"106.52.197.116:11092");
         properties.put(ProducerConfig.ACKS_CONFIG,"all");
         properties.put(ProducerConfig.RETRIES_CONFIG,"0");
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG,"16384");
